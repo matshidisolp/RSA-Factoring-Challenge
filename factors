@@ -1,7 +1,14 @@
 #!/usr/bin/bash
+
 FILE=$1
-while read NUMBERS;
-do
+
+while read -r NUMBERS; do
     factors=($(factor "$NUMBERS"))
-    echo "$NUMBERS=$(($NUMBERS/${factors[1]}))*${factors[1]}"
+    if [ ${#factors[@]} -eq 2 ]; then
+        echo "$NUMBERS is prime"
+    else
+        largest_factor=${factors[-1]}
+        second_largest_factor=$(($NUMBERS / $largest_factor))
+        echo "$NUMBERS=$second_largest_factor*$largest_factor"
+    fi
 done < "$FILE"
